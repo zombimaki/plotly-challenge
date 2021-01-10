@@ -204,7 +204,7 @@ function getDemo(id) {
         // clear demographic info
         demoInfo.html("");
 
-        // grab the necessary demographic data data for the id and append the info to the panel
+        // grab the necessary demographic data for the id and append the info to the panel
         Object.entries(filteredMetadata).forEach((info) => {demoInfo.append("h5").text(info[0] + ":" + info[1]);    
         });
     });
