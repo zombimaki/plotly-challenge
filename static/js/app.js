@@ -8,7 +8,7 @@ function init() {
     var dropdown = d3.select("#selDataset");
 
      // Use D3 fetch to read the JSON file
-    d3.json("Data/samples.json").then((data)=> {
+    d3.json("data/samples.json").then((data)=> {
         console.log(data)
 
         // populate the dropdown with the test subject ids
@@ -42,7 +42,7 @@ function optionChanged(id) {
 function plotCharts(id) {
 
     // Use D3 fetch to read the JSON file
-    d3.json("Data/samples.json").then((data)=> {
+    d3.json("data/samples.json").then((data)=> {
 
         /////////////////////////////////////////////////////////////////////////////////////////
         // Bar Chart - Top 10 Operational Taxonomic Units (OTU) by filtered test subject
@@ -190,7 +190,7 @@ function plotCharts(id) {
 function getDemo(id) {
 
     // Use D3 fetch to read the JSON file
-    d3.json("Data/samples.json").then((data)=> {
+    d3.json("data/samples.json").then((data)=> {
       
         // define the metadata object
         var metadata = data.metadata;
