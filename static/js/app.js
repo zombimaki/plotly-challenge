@@ -1,4 +1,41 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
+// function to Initializes the page
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+function init() {
+
+    // select the dropdown menu by selecting the id selDataset
+    var dropdown = d3.select("#selDataset");
+
+     // Use D3 fetch to read the JSON file
+    d3.json("Data/samples.json").then((data)=> {
+        console.log(data)
+
+        // populate the dropdown with the test subject ids
+        data.names.forEach(function(name) {
+            dropdown.append("option").text(name).property("value");
+        });
+
+        // call functions to generate plots and populate demographic info
+        plotCharts(data.names[0]);
+        getDemo(data.names[0]);
+    });
+}
+
+init();
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// function for change event handling
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+function optionChanged(id) {
+
+    // call functions to generate plots and populate demographic info
+    plotCharts(id);
+    getDemo(id);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
 // function for plotting the data charts
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,7 +64,7 @@ function plotCharts(id) {
         var labels = filteredSample.otu_labels.slice(0, 10);
         
         // Create the Trace
-        var trace = {
+        var traceBar = {
             x: filteredSampleValues,
             y: topTenOTU,
             text: labels,
@@ -48,11 +85,11 @@ function plotCharts(id) {
             orientation: "h",
         };
   
-        // Create the data array for the plot
-        var data = [trace];
+        // Create the data array for the bar plot
+        var dataBar = [traceBar];
   
-        // Define the plot layout
-        var layout = {
+        // Define the bar plot layout
+        var layoutBar = {
             title: "Top 10 Operational Taxonomic Units",
             yaxis:{
                 tickmode:"linear",
@@ -65,13 +102,38 @@ function plotCharts(id) {
             }
         };
   
-        // Render the plot to the div tag with id "bar"
-        Plotly.newPlot("bar", data, layout);
+        // Render the bar plot to the div tag with id "bar"
+        Plotly.newPlot("bar", dataBar, layoutBar);
 
         /////////////////////////////////////////////////////////////////////////////////////////
         // Bubble Chart - Displays each sample for the filtered test subject
         /////////////////////////////////////////////////////////////////////////////////////////
-    
+        
+        var traceBubble = {
+            x: filteredSample.otu_ids,
+            y: filteredSample.sample_values,
+            mode: "markers",
+            marker: {
+                size: filteredSample.sample_values,
+                color: filteredSample.otu_ids,
+                colorscale: "Viridis"
+            },
+            text: filteredSample.otu_labels
+  
+        };
+  
+        // Define the bubble plot layout
+        var layoutBubble = {
+            xaxis:{title: "OTU ID"},
+            height: 500,
+            width: 1200
+        };
+  
+        // Create the data array for the bubble plot 
+        var data1 = [traceBubble];
+  
+        // Render the bar plot to the div tag with id "bubble"
+        Plotly.newPlot("bubble", data1, layoutBubble); 
 
     })
 }
@@ -102,9 +164,3 @@ function getDemo(id) {
         });
     });
 }
-
-
-
-//testing code
-plotCharts("940")
-getDemo("940")
