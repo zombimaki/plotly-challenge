@@ -1,10 +1,17 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////
 // function for plotting the data charts
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
 function plotCharts(id) {
 
     // Use D3 fetch to read the JSON file
     d3.json("Data/samples.json").then((data)=> {
-        
-        // filter sample data by id 
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Bar Chart - Top 10 Operational Taxonomic Units (OTU) by filtered test subject
+        /////////////////////////////////////////////////////////////////////////////////////////
+
+        // filter sample data by test subject id 
         var filteredSample = data.samples.filter(sample => sample.id.toString() === id)[0];
         
         // top 10 sample values from filtered data
@@ -61,11 +68,17 @@ function plotCharts(id) {
         // Render the plot to the div tag with id "bar"
         Plotly.newPlot("bar", data, layout);
 
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Bubble Chart - Displays each sample for the filtered test subject
+        /////////////////////////////////////////////////////////////////////////////////////////
+    
 
     })
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
 // function to display demographic data by ID
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 function getDemo(id) {
 
@@ -75,7 +88,7 @@ function getDemo(id) {
         // define the metadata object
         var metadata = data.metadata;
 
-        // filter meta data info by id
+        // filter meta data info by test subject id
         var filteredMetadata = metadata.filter(meta => meta.id.toString() === id)[0];
 
         // select the panel-body html class with the id "sample-metadata"
