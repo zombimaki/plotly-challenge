@@ -69,18 +69,9 @@ function plotCharts(id) {
             y: topTenOTU,
             text: labels,
             marker: {
-                color: [
-                'rgb((176,224,230)', // powder blue
-                'rgb(0, 0, 139)',  //dark blue
-                'rgb(0, 0, 205)',  //medium blue
-                'rgb(0, 0, 255)',  //blue
-                'rgb(135,206,250)', // light sky blue
-                'rgb(0,191,255)', //deep sky blue
-                'rgb(30,144,255)',  //dodger blue
-                'rgb(100,149,237)', // cornflower blue
-                'rgb(35,206,235)', //sky blue
-                'rgb(65, 105, 225)', // royal blue    
-            ]},
+                color: filteredSample.otu_ids,
+                colorscale: "Viridis"
+        },
             type:"bar",
             orientation: "h",
         };
