@@ -76,7 +76,7 @@ function getDemo(id) {
         var metadata = data.metadata;
 
         // filter meta data info by id
-        var result = metadata.filter(meta => meta.id.toString() === id)[0];
+        var filteredMetadata = metadata.filter(meta => meta.id.toString() === id)[0];
 
         // select the panel-body html class with the id "sample-metadata"
         var demoInfo = d3.select("#sample-metadata");
@@ -85,7 +85,7 @@ function getDemo(id) {
         demoInfo.html("");
 
         // grab the necessary demographic data data for the id and append the info to the panel
-        Object.entries(result).forEach((info) => {demoInfo.append("h5").text(info[0] + ":" + info[1]);    
+        Object.entries(filteredMetadata).forEach((info) => {demoInfo.append("h5").text(info[0] + ":" + info[1]);    
         });
     });
 }
