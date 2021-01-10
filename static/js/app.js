@@ -115,21 +115,72 @@ function plotCharts(id) {
   
         // Define the bubble plot layout
         var layoutBubble = {
+            title: { text: `Sample Values by Operational Taxonomic Unit` },
             xaxis:{title: "OTU ID"},
             height: 500,
             width: 1200
         };
   
         // Create the data array for the bubble plot 
-        var data1 = [traceBubble];
+        var dataBubble = [traceBubble];
   
         // Render the bar plot to the div tag with id "bubble"
-        Plotly.newPlot("bubble", data1, layoutBubble); 
+        Plotly.newPlot("bubble", dataBubble, layoutBubble); 
 
-    })
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Bonus guage chart
+        /////////////////////////////////////////////////////////////////////////////////////////
 
+        // define the metadata object
+        var gaugeMeta = data.metadata;
 
-    
+        // filter meta data info by test subject id
+        var filteredGaugeMeta = gaugeMeta.filter(meta => meta.id.toString() === id)[0];
+        
+        // get wfreq from the filtered
+        var wfreq = filteredGaugeMeta.wfreq
+        
+        // define data for the gauge
+        var dataGauge = [
+            {
+              domain: { x: [0, 1], y: [0, 1] },
+              value: parseFloat(wfreq),
+              title: { text: "Belly Button Weekly Washing Frequency" },
+              type: "indicator",
+              mode: "gauge+number",
+              gauge: {
+                axis: { range: [0, 9] },
+                steps: [
+                         {range: [0, 1], color: "#55C667FF"},
+                         {range: [1, 2], color: "#3CBB75FF"},
+                         {range: [2, 3], color: "#29AF7FFF"},
+                         {range: [3, 4], color: "#20A387FF"},
+                         {range: [4, 5], color: "#1F968BFF"},
+                         {range: [5, 6], color: "#238A8DFF"},
+                         {range: [6, 7], color: "#287D8EFF"},
+                         {range: [7, 8], color: "#2D708EFF"},
+                         {range: [8, 9], color: "#33638DFF"},
+                ],
+                threshold: {
+                  line: { color: "red", width: 4 },
+                  thickness: 0.75,
+                  value: parseFloat(wfreq)
+                }
+              }
+            }
+          ];
+          
+          // Define the gauge plot layout
+          var layoutGauge = { 
+              width: 600, 
+              height: 450, 
+              margin: { t: 0, b: 0 } 
+            };
+
+        // Render the gauge plot to the div tag with id "gauge"
+          Plotly.newPlot('gauge', dataGauge , layoutGauge);
+
+    })    
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
