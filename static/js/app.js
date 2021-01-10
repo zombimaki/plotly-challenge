@@ -1,35 +1,28 @@
-// Creating function for plotting the data charts
+// function for plotting the data charts
 function plotCharts(id) {
+
     // Use D3 fetch to read the JSON file
     d3.json("Data/samples.json").then((data)=> {
-        // console log the json data
-        console.log(data)
-  
-        //var wfreq = data.metadata.map(d => d.wfreq)
-       // console.log(`Washing Freq: ${wfreq}`)
         
-        // define the filtered sample object by id 
-        var sample = data.samples.filter(s => s.id.toString() === id)[0];
+        // filter sample data by id 
+        var filteredSample = data.samples.filter(sample => sample.id.toString() === id)[0];
         
-        // console log the sample object
-        console.log(sample);
+        // top 10 sample values from filtered data
+        var filteredSampleValues = filteredSample.sample_values.slice(0, 10).reverse();
   
-        // define the top 10 samplevalues object
-        var samplevalues = sample.sample_values.slice(0, 10).reverse();
-  
-        // define the top 10 otu ids object
-        var top_10 = (sample.otu_ids.slice(0, 10)).reverse();
+        // top 10 otu_ids from filtered data
+        var topTenOTU_stage = (filteredSample.otu_ids.slice(0, 10)).reverse();
         
-        // define the otu object as the word "OTU" with the ids appended
-        var otu = top_10.map(id => "OTU " + id)
+        // update the format of the OTU ID from "####"" to "OTU ####""
+        var topTenOTU = topTenOTU_stage.map(id => "OTU " + id)
     
-        // define the top 10 labels object
-        var labels = sample.otu_labels.slice(0, 10);
+        // top 10 otu_labels from filtered data
+        var labels = filteredSample.otu_labels.slice(0, 10);
         
         // Create the Trace
         var trace = {
-            x: samplevalues,
-            y: otu,
+            x: filteredSampleValues,
+            y: topTenOTU,
             text: labels,
             marker: {
                 color: [
@@ -53,7 +46,7 @@ function plotCharts(id) {
   
         // Define the plot layout
         var layout = {
-            title: "Top 10 OTUs",
+            title: "Top 10 Operational Taxonomic Units",
             yaxis:{
                 tickmode:"linear",
             },
@@ -61,7 +54,7 @@ function plotCharts(id) {
                 l: 100,
                 r: 100,
                 t: 100,
-                b: 100
+                b: 50
             }
         };
   
@@ -72,8 +65,33 @@ function plotCharts(id) {
     })
 }
 
+// function to display demographic data by ID
+
+function getDemo(id) {
+
+    // Use D3 fetch to read the JSON file
+    d3.json("Data/samples.json").then((data)=> {
+      
+        // define the metadata object
+        var metadata = data.metadata;
+
+        // filter meta data info by id
+        var result = metadata.filter(meta => meta.id.toString() === id)[0];
+
+        // select the panel-body html class with the id "sample-metadata"
+        var demoInfo = d3.select("#sample-metadata");
+        
+        // clear demographic info
+        demoInfo.html("");
+
+        // grab the necessary demographic data data for the id and append the info to the panel
+        Object.entries(result).forEach((info) => {demoInfo.append("h5").text(info[0] + ":" + info[1]);    
+        });
+    });
+}
 
 
 
 //testing code
 plotCharts("940")
+getDemo("940")
